@@ -1,0 +1,68 @@
+const express = require("express");
+const User = require("./user.model");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger.json");
+
+const router = express.Router();
+
+router.use("/api-docs", swaggerUi.serve);
+
+router.get("/api-docs", swaggerUi.setup(swaggerDocument));
+
+router.get("/", (req, res) => {
+  User.find({}, (err, users) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.status(200).send(users);
+    }
+  });
+});
+
+router.get("/:id", (req, res) => {
+  User.findById(req.params.id, (err, user) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.status(200).send(user);
+    }
+  });
+});
+
+router.post("/", (req, res) => {
+  const user = new User(req.body);
+  user.save((err, user) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.status(200).send(user);
+    }
+  });
+});
+
+router.put("/:id", (req, res) => {
+  User.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    { new: true },
+    (err, user) => {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.status(200).send(user);
+      }
+    }
+  );
+});
+
+router.delete("/:id", (req, res) => {
+  User.findByIdAndRemove(req.params.id, (err, user) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.status(200).send(user);
+    }
+  });
+});
+
+module.exports = router;
