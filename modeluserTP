@@ -6,35 +6,36 @@ const User = new mongoose.Schema({
         required: true,
         unique: true
     },
-    password: {
+    mdp: {
         type: String,
         required: true
     },
-    firstName: {
+    nom: {
         type: String,
         required: true
     },
-    lastName: {
+    prenom: {
         type: String,
         required: true
     },
-    email: {
+    mail: {
         type: String,
         required: true,
         unique: true
     },
-    phone: {
-        type: String,
-        required: true
-    },
-    userType: {
+    telephone: {
         type: String,
         required: true
     },
     createdDate: {
         type: Date,
         default: Date.now
+    },
+    userType: {
+        type: String,
+        required: true
     }
+
 }, { timestamps: true });
 
 mongoose.model('User', User);
